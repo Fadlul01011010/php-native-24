@@ -42,7 +42,45 @@ function tambah($data)
                 ";
 
     mysqli_query($conn, $query);
-    echo mysqli_errno($conn);
+    echo mysqli_error($conn);
+    // kembalikan nilai apakah ada perubahan / baris yang berubah
+    return mysqli_affected_rows($conn);
+}
+
+function hapus($id)
+{
+    $conn = koneksi();
+    mysqli_query($conn, "DELETE FROM t_mhs WHERE id=$id") or die(mysqli_error($conn));
+    // jangan lupa return
+
+    return mysqli_affected_rows($conn);
+}
+
+function ubah($data)
+{
+    $conn = koneksi();
+
+    // pecah dulu dataanya, lindungi pake html chars
+    $id = $data['id'];
+    $nim = htmlspecialchars($data['nim']);
+    $nama = htmlspecialchars($data['nama']);
+    $email = htmlspecialchars($data['email']);
+    $prodi = htmlspecialchars($data['prodi']);
+    $gambar = htmlspecialchars($data['gambar']);
+
+
+    $query = "UPDATE 
+                t_mhs
+                SET 
+                nim = '$nim',
+                nama = '$nama',
+                email = '$email',
+                prodi = '$prodi',
+                gambar = '$gambar' WHERE id='$id'
+            ";
+
+    mysqli_query($conn, $query);
+    echo mysqli_error($conn);
     // kembalikan nilai apakah ada perubahan / baris yang berubah
     return mysqli_affected_rows($conn);
 }
