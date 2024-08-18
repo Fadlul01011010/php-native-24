@@ -66,7 +66,7 @@ function tambah($data)
                 (NULL, '$kodeBooking', '$nik', '$nama', '$jeniskelamin', '$nohp', '$tanggal', '$jumlahorang', '$totalBayar', '$status', '$datecreate', '$datecreate', '$datecreate')
                 ";
 
-    mysqli_query($conn, $query);
+    mysqli_query($conn, $query) or die(mysqli_error($conn));
     echo mysqli_error($conn);
     // kembalikan nilai apakah ada perubahan / baris yang berubah
     return mysqli_affected_rows($conn);
@@ -86,22 +86,48 @@ function ubah($data)
     $conn = koneksi();
 
     // pecah dulu dataanya, lindungi pake html chars
-    $id = $data['id'];
-    $nim = htmlspecialchars($data['nim']);
+    $id = htmlspecialchars($data['id']);
+    $nik = htmlspecialchars($data['nik']);
     $nama = htmlspecialchars($data['nama']);
-    $email = htmlspecialchars($data['email']);
-    $prodi = htmlspecialchars($data['prodi']);
-    $gambar = htmlspecialchars($data['gambar']);
+    $nohp = htmlspecialchars($data['nohp']);
+    $jeniskelamin = htmlspecialchars($data['jeniskelamin']);
+    $tanggal = htmlspecialchars($data['tanggal']);
+    $jumlahorang = htmlspecialchars($data['jumlahorang']);
+    if ($jumlahorang == 0) {
+        echo "<script>
+        alert('jumlah pengunjung tidak boleh 0');
+        document.location.href = 'tambah.php';
+        </script>";
+    }
+    // Kelola Kode Booking
+    $namawisata = "BEP";
+    $kodeBooking = $namawisata . strtoupper(uniqid());
 
+    // Kelola Total Bayar
+    $hargaTiket = 10000;
+    $totalBayar = $hargaTiket * $jumlahorang;
+
+    // Status
+    $status = 0;
+
+    // tanggal buat
+    date_default_timezone_set('Asia/Jakarta');
+    $datecreate = date("Y-m-d h:i:sa");
 
     $query = "UPDATE 
                 t_tiket
                 SET 
-                nim = '$nim',
+                nik = '$nik',
+                kodebooking = '$kodeBooking',
                 nama = '$nama',
-                email = '$email',
-                prodi = '$prodi',
-                gambar = '$gambar' WHERE id='$id'
+                jeniskelamin = '$jeniskelamin',
+                nohp = '$nohp',
+                tanggal = '$tanggal',
+                jumlahorang = '$jumlahorang',
+                totalbayar = '$totalBayar',
+                status = '$status',
+                updated_at = '$datecreate',
+                WHERE id='$id'
             ";
 
     mysqli_query($conn, $query);

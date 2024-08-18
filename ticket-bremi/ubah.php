@@ -11,10 +11,10 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 
 // query mhs berdasarkan id
-$m = query("SELECT * FROM t_mhs WHERE id=$id");
+$t = query("SELECT * FROM t_tiket WHERE id=$id");
 
 // cek apakah id nya ada
-if (!$m) {
+if (!$t) {
     header("Location: index.php");
     exit;
 }
@@ -44,48 +44,65 @@ if (isset($_POST['ubah'])) {
 </head>
 
 <body>
-    <h3>Form Ubah data mahasiswa</h3>
-
-    <a href="detail.php?id=<?= $m['id']; ?>"><button>Batal</button></a>
+    <h3>Form Ubah data pembeli</h3>
     <form action="" method="post">
-        <input type="hidden" name="id" value="<?= $m['id']; ?>">
+        <input type="hidden" name="id" value="<?= $t['id']; ?>">
         <ul>
             <li>
                 <label>
-                    NIM :
-                    <input type="text" name="nim" autofocus required value="<?= $m['nim']; ?>">
+                    NIK :
+                    <input type="text" name="nik" value="<?= $t['nik']; ?>" autofocus required>
                 </label>
             </li>
             <li>
                 <label>
                     Nama :
-                    <input type=" text" name="nama" required value="<?= $m['nama']; ?>">
+                    <input type="text" name="nama" required>
                 </label>
             </li>
             <li>
                 <label>
-                    Email :
-                    <input type=" text" name="email" required value="<?= $m['email']; ?>">
+                    No Hp :
+                    <input type="number" name="nohp" required minlength="12">
                 </label>
             </li>
             <li>
                 <label>
-                    Prodi :
-                    <input type=" text" name="prodi" required value="<?= $m['prodi']; ?>">
+                    Jenis Kelamin :
+                    <input type="radio" name="jeniskelamin" value="Laki-Laki" checked>Laki-Laki
+                    <input type="radio" name="jeniskelamin" value="Perempuan">Perempuan
                 </label>
             </li>
             <li>
                 <label>
-                    Gambar :
-                    <input type="text" name="gambar" value="<?= $m['gambar']; ?>">
+                    Tanggal :
+                    <input type="date" name="tanggal" required>
                 </label>
             </li>
             <li>
-                <button type=" submit" name="ubah">Ubah Data</button>
-
+                <label>
+                    Jumlah pengunjung :
+                    <input type="number" name="jumlahorang" class="jumlah-pengunjung" required>
+                </label>
+            </li>
+            <li>
+                <label>
+                    Harga Tiket :
+                    <p style="display: inline;">Rp. 10,000</p>
+                </label>
+            </li>
+            <li>
+                <label>
+                    Total Bayar :
+                    <div class="total-bayar" style="display: inline;"></div>
+                </label>
+            </li>
+            <li>
+                <button type="submit" name="tambah">Beli Sekarang </button>
             </li>
         </ul>
     </form>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
